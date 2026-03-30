@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Sidebar() {
   return (
-    <aside className="hidden md:flex flex-col w-56 border-r border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 p-4 gap-3">
+    <aside className="md:hidden fixed inset-0 z-50 bg-white dark:bg-stone-900 bg-opacity-100 dark:bg-opacity-100 p-6 space-y-4">
       <h2 className="text-xl font-serif mb-2">Menu</h2>
 
       <Link href="/dashboard" className="hover:underline">
