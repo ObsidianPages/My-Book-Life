@@ -39,7 +39,7 @@ export default function AestheticsPage() {
     };
 
     load();
-  }, []);
+  }, []); // ← THIS CLOSING BRACKET WAS MISSING IN YOUR FILE
 
   return (
     <div className="space-y-6">
@@ -70,4 +70,18 @@ export default function AestheticsPage() {
             </div>
 
             <div className="flex flex-wrap gap-1">
-              {a.mood_tags?.slice
+              {a.mood_tags?.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs px-2 py-1 rounded-full bg-stone-100 text-stone-700"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
