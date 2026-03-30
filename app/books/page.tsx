@@ -44,6 +44,8 @@ export default function BooksPage() {
 
   return (
     <div className="space-y-6">
+      className="min-h-screen bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: "url('/public/books.jpg')" }}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-4xl font-serif">My Books</h1>
         <Link

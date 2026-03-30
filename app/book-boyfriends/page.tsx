@@ -35,6 +35,8 @@ export default function BookBoyfriendsPage() {
 
   return (
     <div className="space-y-6">
+      className="min-h-screen bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: "url('/public/boyfriend.jpg')" }}
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-serif">Book Boyfriend Files</h1>
         <Link
