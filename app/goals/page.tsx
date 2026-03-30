@@ -50,17 +50,17 @@ export default function GoalsPage() {
         .eq('user_id', user.id)
         .not('finished_at', 'is', null);
 
-      const yearCount =
-        booksYear?.filter((b) => {
-          const d = new Date(b.finished_at as string);
-          return d.getFullYear() === year;
-        }).length || 0;
+const yearCount =
+  booksYear?.filter((b: { finished_at: string | null }) => {
+    const d = new Date(b.finished_at as string);
+    return d.getFullYear() === year;
+  }).length || 0;
 
-      const monthCount =
-        booksYear?.filter((b) => {
-          const d = new Date(b.finished_at as string);
-          return d.getFullYear() === year && d.getMonth() + 1 === month;
-        }).length || 0;
+const monthCount =
+  booksYear?.filter((b: { finished_at: string | null }) => {
+    const d = new Date(b.finished_at as string);
+    return d.getFullYear() === year && d.getMonth() + 1 === month;
+  }).length || 0;
 
       setBooksReadThisYear(yearCount);
       setBooksReadThisMonth(monthCount);
