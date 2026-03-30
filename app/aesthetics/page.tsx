@@ -59,23 +59,15 @@ export default function AestheticsPage() {
                 <div
                   key={i}
                   className="h-20 w-full bg-stone-200 rounded-lg overflow-hidden"
-                />
+                >
+                  <img
+                    src={img}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                </div>
               ))}
             </div>
 
             <div className="flex flex-wrap gap-1">
-              {a.mood_tags?.slice(0, 3).map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs px-2 py-1 rounded-full bg-stone-100 text-stone-700"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
-}
+              {a.mood_tags?.slice
