@@ -1,7 +1,7 @@
 import './globals.css';
 import type { ReactNode } from 'react';
 import Navbar from '@/components/navbar';
-import Sidebar from '@/components/sidebar';
+/*import Sidebar from '@/components/sidebar'; */
 
 export const metadata = {
   title: 'My Book Life',
