@@ -6,7 +6,7 @@ export default function Sidebar() {
       <h2 className="text-xl font-serif mb-2">Menu</h2>
 
       <Link href="/dashboard" className="hover:underline">
-        Dashboard
+        sideDashboard
       </Link>
       <Link href="/books" className="hover:underline">
         Books
