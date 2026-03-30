@@ -44,9 +44,9 @@ export default function QuotesPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6"
       className="min-h-screen bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/public/quotes.jpg')" }}
+      style={{ backgroundImage: "url('/quotes.jpg')" }}>
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-serif">Favourite Quotes</h1>
         <Link
