@@ -54,47 +54,6 @@ export default function Navbar() {
             ☰
           </button>
         </div>
-
-        <div className="md:hidden fixed inset-0 z-50 bg-white dark:bg-stone-900 bg-opacity-100 dark:bg-opacity-100 p-6 space-y-4">
-          <Link href="/dashboard" className="hover:underline">
-            Dashboard
-          </Link>
-          <Link href="/books" className="hover:underline">
-            Books
-          </Link>
-          <Link href="/authors" className="hover:underline">
-            Authors
-          </Link>
-          <Link href="/book-boyfriends" className="hover:underline">
-            Boyfriends
-          </Link>
-          <Link href="/quotes" className="hover:underline">
-            Quotes
-          </Link>
-          <Link href="/aesthetics" className="hover:underline">
-            Aesthetics
-          </Link>
-          <Link href="/goals" className="hover:underline">
-            Goals
-          </Link>
-          <Link href="/settings" className="hover:underline">
-            Settings
-          </Link>
-
-          <button
-            onClick={toggleDark}
-            className="px-3 py-1 rounded-lg border border-stone-300 dark:border-stone-600"
-          >
-            {dark ? 'Light Mode' : 'Dark Mode'}
-          </button>
-
-          <button
-            onClick={logout}
-            className="text-red-600 dark:text-red-400 underline"
-          >
-            Logout
-          </button>
-        </div>
       </nav>
 
       {open && (
