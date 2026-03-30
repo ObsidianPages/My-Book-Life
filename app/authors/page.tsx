@@ -13,6 +13,7 @@ type Author = {
 
 export default function AuthorsPage() {
   const [authors, setAuthors] = useState<Author[]>([]);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const loadAuthors = async () => {
@@ -32,9 +33,13 @@ export default function AuthorsPage() {
     loadAuthors();
   }, []);
 
+  const filtered = authors.filter((a) =>
+    a.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-4xl font-serif">Authors</h1>
         <Link
           href="/authors/new"
@@ -44,8 +49,15 @@ export default function AuthorsPage() {
         </Link>
       </div>
 
+      <input
+        className="w-full border border-stone-300 rounded-lg p-2"
+        placeholder="Search authors..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {authors.map((a) => (
+        {filtered.map((a) => (
           <Link
             key={a.id}
             href={`/authors/${a.id}`}

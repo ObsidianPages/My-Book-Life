@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { useParams } from 'next/navigation';
+import ImageUploader from '@/components/image-uploader';
 
 type Aesthetic = {
   id: string;
@@ -38,6 +39,8 @@ export default function AestheticDetailPage() {
           palette: data.palette || [],
           book_title: data.books?.title || 'Untitled',
         });
+        setMoodTags((data.mood_tags || []).join(', '));
+        setDescription(data.description || '');
       }
     };
 
@@ -47,11 +50,12 @@ export default function AestheticDetailPage() {
   const handleSave = async () => {
     const { data: userData } = await supabase.auth.getUser();
     const user = userData.user;
-    if (!user) return;
+    if (!user || !aesthetic) return;
 
     await supabase
       .from('aesthetics')
       .upsert({
+        id: aesthetic.id,
         user_id: user.id,
         book_id: bookId,
         mood_tags: moodTags ? moodTags.split(',').map((t) => t.trim()) : [],
@@ -65,21 +69,39 @@ export default function AestheticDetailPage() {
 
   return (
     <div className="space-y-8 max-w-2xl">
-      <h1 className="text-4xl font-serif">{aesthetic.book_title} — Aesthetics</h1>
+      <h1 className="text-4xl font-serif">
+        {aesthetic.book_title} — Aesthetics
+      </h1>
 
       <div>
         <h2 className="text-2xl font-serif mb-2">Moodboard</h2>
         <div className="grid grid-cols-3 gap-2">
           {aesthetic.images?.map((img, i) => (
-            <div
+            <img
               key={i}
-              className="h-28 w-full bg-stone-200 rounded-lg overflow-hidden"
+              src={img}
+              className="h-28 w-full object-cover bg-stone-200 rounded-lg overflow-hidden"
             />
           ))}
         </div>
         <p className="text-sm text-stone-500 mt-2">
-          (Image uploads can be added later — this is the placeholder grid.)
+          Upload images to build your moodboard.
         </p>
+
+        <div className="mt-3">
+          <ImageUploader
+            onUpload={async (url) => {
+              const updated = [...(aesthetic.images || []), url];
+
+              await supabase
+                .from('aesthetics')
+                .update({ images: updated })
+                .eq('id', aesthetic.id);
+
+              setAesthetic({ ...aesthetic, images: updated });
+            }}
+          />
+        </div>
       </div>
 
       <div>

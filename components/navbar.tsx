@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 export default function Navbar() {
   const router = useRouter();
   const [dark, setDark] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('theme');
@@ -36,34 +37,127 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="w-full border-b border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 py-3 px-4 flex items-center justify-between">
-      <Link href="/" className="text-xl font-serif">
-        Cozy Reader Hub
-      </Link>
+    <>
+      <nav className="w-full border-b border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 py-3 px-4 flex items-center justify-between">
+        <Link href="/" className="text-xl font-serif">
+          Cozy Reader Hub
+        </Link>
 
-      <div className="flex items-center gap-4 text-sm">
-        <Link href="/dashboard" className="hover:underline">Dashboard</Link>
-        <Link href="/books" className="hover:underline">Books</Link>
-        <Link href="/authors" className="hover:underline">Authors</Link>
-        <Link href="/book-boyfriends" className="hover:underline">Boyfriends</Link>
-        <Link href="/quotes" className="hover:underline">Quotes</Link>
-        <Link href="/goals" className="hover:underline">Goals</Link>
-        <Link href="/settings" className="hover:underline">Settings</Link>
+        <div className="flex items-center gap-3 md:hidden">
+          <button
+            onClick={toggleDark}
+            className="px-3 py-1 rounded-lg border border-stone-300 dark:border-stone-600 text-xs"
+          >
+            {dark ? 'Light' : 'Dark'}
+          </button>
+          <button onClick={() => setOpen(!open)} className="text-2xl">
+            ☰
+          </button>
+        </div>
 
-        <button
-          onClick={toggleDark}
-          className="px-3 py-1 rounded-lg border border-stone-300 dark:border-stone-600"
-        >
-          {dark ? 'Light Mode' : 'Dark Mode'}
-        </button>
+        <div className="hidden md:flex items-center gap-4 text-sm">
+          <Link href="/dashboard" className="hover:underline">
+            Dashboard
+          </Link>
+          <Link href="/books" className="hover:underline">
+            Books
+          </Link>
+          <Link href="/authors" className="hover:underline">
+            Authors
+          </Link>
+          <Link href="/book-boyfriends" className="hover:underline">
+            Boyfriends
+          </Link>
+          <Link href="/quotes" className="hover:underline">
+            Quotes
+          </Link>
+          <Link href="/aesthetics" className="hover:underline">
+            Aesthetics
+          </Link>
+          <Link href="/goals" className="hover:underline">
+            Goals
+          </Link>
+          <Link href="/settings" className="hover:underline">
+            Settings
+          </Link>
 
-        <button
-          onClick={logout}
-          className="text-red-600 dark:text-red-400 underline"
-        >
-          Logout
-        </button>
-      </div>
-    </nav>
+          <button
+            onClick={toggleDark}
+            className="px-3 py-1 rounded-lg border border-stone-300 dark:border-stone-600"
+          >
+            {dark ? 'Light Mode' : 'Dark Mode'}
+          </button>
+
+          <button
+            onClick={logout}
+            className="text-red-600 dark:text-red-400 underline"
+          >
+            Logout
+          </button>
+        </div>
+      </nav>
+
+      {open && (
+        <div className="md:hidden fixed inset-0 bg-white dark:bg-stone-900 z-40 p-6 space-y-4">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-lg font-serif">Menu</span>
+            <button onClick={() => setOpen(false)} className="text-2xl">
+              ×
+            </button>
+          </div>
+
+          <MobileLink href="/dashboard" onClick={() => setOpen(false)}>
+            Dashboard
+          </MobileLink>
+          <MobileLink href="/books" onClick={() => setOpen(false)}>
+            Books
+          </MobileLink>
+          <MobileLink href="/authors" onClick={() => setOpen(false)}>
+            Authors
+          </MobileLink>
+          <MobileLink href="/book-boyfriends" onClick={() => setOpen(false)}>
+            Book Boyfriends
+          </MobileLink>
+          <MobileLink href="/quotes" onClick={() => setOpen(false)}>
+            Quotes
+          </MobileLink>
+          <MobileLink href="/aesthetics" onClick={() => setOpen(false)}>
+            Aesthetics
+          </MobileLink>
+          <MobileLink href="/goals" onClick={() => setOpen(false)}>
+            Goals
+          </MobileLink>
+          <MobileLink href="/settings" onClick={() => setOpen(false)}>
+            Settings
+          </MobileLink>
+
+          <button
+            onClick={() => {
+              setOpen(false);
+              logout();
+            }}
+            className="text-red-600 underline mt-4"
+          >
+            Logout
+          </button>
+        </div>
+      )}
+    </>
+  );
+}
+
+function MobileLink({
+  href,
+  children,
+  onClick,
+}: {
+  href: string;
+  children: React.ReactNode;
+  onClick: () => void;
+}) {
+  return (
+    <a href={href} onClick={onClick} className="block text-lg">
+      {children}
+    </a>
   );
 }

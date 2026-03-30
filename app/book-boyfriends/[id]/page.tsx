@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { useParams } from 'next/navigation';
+import ImageUploader from '@/components/image-uploader';
 
 type Boyfriend = {
   id: string;
@@ -14,6 +15,7 @@ type Boyfriend = {
   would_i_survive: string;
   notes: string;
   favourite_moments: string;
+  image_url: string | null;
 };
 
 export default function BoyfriendDetailsPage() {
@@ -40,23 +42,45 @@ export default function BoyfriendDetailsPage() {
 
   return (
     <div className="space-y-8 max-w-2xl">
-      <div>
-        <h1 className="text-4xl font-serif">{bf.name}</h1>
-        <p className="text-stone-600">{bf.book}</p>
+      <div className="flex items-start gap-4">
+        {bf.image_url && (
+          <img
+            src={bf.image_url}
+            className="w-32 h-32 rounded-lg object-cover border border-stone-300 dark:border-stone-600"
+          />
+        )}
+        <div>
+          <h1 className="text-4xl font-serif">{bf.name}</h1>
+          <p className="text-stone-600">{bf.book}</p>
 
-        <div className="flex flex-wrap gap-2 mt-3">
-          {bf.traits?.map((t) => (
-            <span
-              key={t}
-              className="text-xs px-2 py-1 rounded-full bg-stone-100 text-stone-700"
-            >
-              {t}
-            </span>
-          ))}
+          <div className="flex flex-wrap gap-2 mt-3">
+            {bf.traits?.map((t) => (
+              <span
+                key={t}
+                className="text-xs px-2 py-1 rounded-full bg-stone-100 text-stone-700"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div>
+        <h2 className="text-2xl font-serif mb-2">Change Image</h2>
+        <ImageUploader
+          onUpload={async (url) => {
+            await supabase
+              .from('book_boyfriends')
+              .update({ image_url: url })
+              .eq('id', bf.id);
+
+            setBf({ ...bf, image_url: url });
+          }}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FlagCard title="Green Flags" items={bf.green_flags} color="green" />
         <FlagCard title="Red Flags" items={bf.red_flags} color="red" />
       </div>

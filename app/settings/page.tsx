@@ -2,18 +2,40 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
+import ImageUploader from '@/components/image-uploader';
 
 export default function SettingsPage() {
+  const [profile, setProfile] = useState<any>(null);
+  const [username, setUsername] = useState('');
   const [dark, setDark] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
-    const saved = localStorage.getItem('theme');
-    if (saved === 'dark') {
-      document.documentElement.classList.add('dark');
-      setDark(true);
-    }
+    const init = async () => {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'dark') {
+        document.documentElement.classList.add('dark');
+        setDark(true);
+      }
+
+      const { data: userData } = await supabase.auth.getUser();
+      const user = userData.user;
+      if (!user) return;
+
+      const { data } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+      if (data) {
+        setProfile(data);
+        setUsername(data.username || '');
+      } else {
+        setProfile({ id: user.id });
+      }
+    };
+
+    init();
   }, []);
 
   const toggleDark = () => {
@@ -29,38 +51,23 @@ export default function SettingsPage() {
     }
   };
 
-  const uploadImage = async (e: any) => {
-    try {
-      setUploading(true);
-      const file = e.target.files[0];
-      if (!file) return;
+  const save = async () => {
+    const { data: userData } = await supabase.auth.getUser();
+    const user = userData.user;
+    if (!user) return;
 
-      const fileName = `${Date.now()}-${file.name}`;
+    await supabase.from('profiles').upsert({
+      id: user.id,
+      username,
+    });
 
-      const { data, error } = await supabase.storage
-        .from('images')
-        .upload(fileName, file);
-
-      if (error) throw error;
-
-      const { data: urlData } = supabase.storage
-        .from('images')
-        .getPublicUrl(fileName);
-
-      setImageUrl(urlData.publicUrl);
-    } catch (err) {
-      console.error(err);
-      alert('Upload failed');
-    } finally {
-      setUploading(false);
-    }
+    alert('Saved');
   };
 
   return (
     <div className="space-y-8 max-w-xl">
       <h1 className="text-4xl font-serif">Settings</h1>
 
-      {/* Dark Mode */}
       <div>
         <h2 className="text-2xl font-serif mb-2">Appearance</h2>
         <button
@@ -71,21 +78,43 @@ export default function SettingsPage() {
         </button>
       </div>
 
-      {/* Image Upload */}
       <div>
-        <h2 className="text-2xl font-serif mb-2">Image Upload Test</h2>
-        <input type="file" onChange={uploadImage} />
+        <h2 className="text-2xl font-serif mb-2">Avatar</h2>
 
-        {uploading && <p className="text-sm text-stone-500">Uploading...</p>}
-
-        {imageUrl && (
+        {profile?.avatar_url && (
           <img
-            src={imageUrl}
-            alt="Uploaded"
-            className="mt-4 rounded-lg border border-stone-300 dark:border-stone-600"
+            src={profile.avatar_url}
+            className="w-24 h-24 rounded-full object-cover border border-stone-300 dark:border-stone-600 mb-3"
           />
         )}
+
+        <ImageUploader
+          onUpload={async (url) => {
+            if (!profile) return;
+            await supabase
+              .from('profiles')
+              .upsert({ id: profile.id, avatar_url: url, username });
+
+            setProfile({ ...profile, avatar_url: url });
+          }}
+        />
       </div>
+
+      <div>
+        <h2 className="text-2xl font-serif mb-2">Username</h2>
+        <input
+          className="w-full border border-stone-300 dark:border-stone-600 rounded-lg p-2"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </div>
+
+      <button
+        onClick={save}
+        className="px-4 py-2 bg-stone-900 text-stone-50 rounded-lg"
+      >
+        Save
+      </button>
     </div>
   );
 }

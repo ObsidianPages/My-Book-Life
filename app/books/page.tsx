@@ -15,6 +15,7 @@ type Book = {
 
 export default function BooksPage() {
   const [books, setBooks] = useState<Book[]>([]);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const loadBooks = async () => {
@@ -34,9 +35,16 @@ export default function BooksPage() {
     loadBooks();
   }, []);
 
+  const filtered = books.filter((b) =>
+    [b.title, b.author, b.status]
+      .join(' ')
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  );
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-4xl font-serif">My Books</h1>
         <Link
           href="/books/new"
@@ -46,8 +54,15 @@ export default function BooksPage() {
         </Link>
       </div>
 
+      <input
+        className="w-full border border-stone-300 rounded-lg p-2"
+        placeholder="Search by title, author, or status..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {books.map((b) => (
+        {filtered.map((b) => (
           <BookCard
             key={b.id}
             id={b.id}
