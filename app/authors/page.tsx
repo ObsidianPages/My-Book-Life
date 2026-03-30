@@ -38,8 +38,7 @@ export default function AuthorsPage() {
   );
 
   return (
-    <div className="space-y-6"
-      className="min-h-screen bg-cover bg-center bg-no-repeat"
+    <div className="space-y-6 min-h-screen bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/author.jpg')" }}>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-4xl font-serif">Authors</h1>

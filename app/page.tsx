@@ -1,7 +1,6 @@
 export default function LandingPage() {
   return (
-    <div className="text-center space-y-10 py-20 px-4"
-      className="min-h-screen bg-cover bg-center bg-no-repeat"
+    <div className="text-center space-y-10 py-20 px-4 min-h-screen bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/main.jpg')" }}>
       <h1 className="text-5xl sm:text-6xl font-serif">My Book Life</h1>
       <p className="text-lg sm:text-xl text-stone-600 max-w-xl mx-auto">
