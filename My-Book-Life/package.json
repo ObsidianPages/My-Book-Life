@@ -1,0 +1,29 @@
+// This is the configuration for a Next.js 14 application with TypeScript, Tailwind CSS, and Supabase.
+{
+  "name": "my-book-life",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "14.0.0",
+    "react": "18.0.0",
+    "react-dom": "18.0.0",
+    "@supabase/supabase-js": "2.0.0",
+    "tailwindcss": "latest",
+    "postcss": "latest",
+    "autoprefixer": "latest"
+  },
+  "devDependencies": {
+    "typescript": "latest",
+    "@types/react": "latest",
+    "@types/node": "latest"
+  },
+  "eslintConfig": {
+    "extends": ["next/core-web-vitals"]
+  },
+  "browserslist": ["last 1 version", "> 1%", "not dead"]
+}
