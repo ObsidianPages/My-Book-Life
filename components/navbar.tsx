@@ -55,7 +55,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        <div className="hidden md:flex items-center gap-4 text-sm">
+        <div className="md:hidden fixed inset-0 z-50 bg-white dark:bg-stone-900 bg-opacity-100 dark:bg-opacity-100 p-6 space-y-4">
           <Link href="/dashboard" className="hover:underline">
             Dashboard
           </Link>
